@@ -54,6 +54,18 @@ class RepositoryScaffoldTests(unittest.TestCase):
         self.assertIn("does not claim to enable amd acceleration yet", readme)
         self.assertIn("no gpu success claim is valid before gate 3", architecture)
 
+    def test_installer_requirements_are_explicit(self):
+        spec = (ROOT / "docs" / "installer-design.md").read_text()
+        for requirement in (
+            "English, Japanese, and Korean",
+            "Never search the entire disk",
+            "pinned versions",
+            "SHA-256",
+            "backup/restore",
+            "must not run UAC",
+        ):
+            self.assertIn(requirement, spec)
+
 
 if __name__ == "__main__":
     unittest.main()
