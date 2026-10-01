@@ -1,0 +1,9 @@
+{
+  "id": "naia_rocm_runtime",
+  "name": "NAIA ROCm Runtime",
+  "version": "0.0.1",
+  "naia_ext_api": 1,
+  "entry": "main.py",
+  "description": "Development scaffold only. Does not change or accelerate the NAIA runtime yet."
+}
+
