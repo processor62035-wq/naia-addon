@@ -25,8 +25,19 @@ class PatchError(RuntimeError):
     pass
 
 
+ACTIVE_TEXT: dict[str, str] = {}
+
+
 # Filled only in a reviewed release build. A mutable JSON sidecar alone is not a trust anchor.
 TRUSTED_MANIFEST_SHA256 = ""
+
+AMD_TRANSFORM_PROFILE_ID = "amd-rocm10.0-gfx1201-windows11-25h2-cp313"
+AMD_TRANSFORM_MODULE_SHA256 = "6D1E7AA63553D6AE330AF541BCF42F43F1142220C5659F94940B267CB97B509C"
+AMD_TRANSFORM_BASELINES = {
+    "resources/naia-backend/core/anima_engine/manifest.py": "6685DCFCDA685056E64445CD062176B273CF2D35002B52EB5A9EAD1E04254335",
+    "resources/naia-backend/core/anima_engine/install.py": "FDE63683E5FDBDFFF1B9C541A035C66B2D7DDD53CCB0EE3FB1F74929019148D0",
+    "resources/naia-backend/core/anima_engine/runtime.py": "748EA6520BFE14D571AF39D2B6A71ECCDF5F8F979E0C386E1A5065BEDAA1A27B",
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -97,8 +108,12 @@ def verify_manifest(package_root: Path) -> dict:
     manifest = json.loads(manifest_bytes.decode("utf-8"))
     if manifest.get("schema_version") != 1 or manifest.get("enabled") is not True:
         raise PatchError("AMD support manifest is disabled.")
-    if not manifest.get("profiles") or not manifest.get("patches"):
-        raise PatchError("Enabled manifest must include reviewed hardware profiles and patches.")
+    profiles = manifest.get("profiles")
+    has_transform_profile = isinstance(profiles, list) and any(
+        p.get("id") == AMD_TRANSFORM_PROFILE_ID and p.get("patch_strategy") == "source-transform"
+        for p in profiles if isinstance(p, dict))
+    if not profiles or (not manifest.get("patches") and not has_transform_profile):
+        raise PatchError("Enabled manifest must include reviewed hardware profiles and a patch plan.")
     allowlist = policy.get("allowed_artifact_urls", [])
     for item in manifest.get("artifacts", []):
         parsed = urllib.parse.urlparse(item.get("url", ""))
@@ -127,6 +142,26 @@ def progress_line(name: str, received: int, total: int | None, elapsed: float) -
         ratio = f"{min(100.0, received * 100.0 / total):5.1f}%"
         size = str(total)
     return f"{name}: {received}/{size} bytes ({ratio}) {speed:.0f} bytes/s"
+
+
+def render_download_event(event: dict, strings: dict[str, str]) -> str:
+    """Render T3 JSONL events; null total/percent remains explicitly indeterminate."""
+    kind = str(event.get("event", "progress"))
+    name = str(event.get("artifact", "(unknown artifact)"))
+    received = int(event.get("received_bytes") or 0)
+    total = event.get("total_bytes")
+    percent = event.get("percent")
+    if total is None or percent is None:
+        total_text = strings.get("unknown_size", "size unknown")
+        percent_text = strings.get("indeterminate", "indeterminate")
+    else:
+        total_text = str(int(total))
+        percent_text = f"{float(percent):.1f}%"
+    base = strings.get("download_progress", "{name}: {received}/{total} ({percent}), {speed}/s")
+    status = strings.get(f"download_{kind}", strings.get("download_progress_status", "Progress"))
+    return base.format(name=name, received=received, total=total_text, percent=percent_text,
+                       speed=int(event.get("bytes_per_second") or 0), attempt=int(event.get("attempt") or 1),
+                       status=status)
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -173,43 +208,47 @@ def download_verified(url: str, destination: Path, expected_sha256: str,
             temp.unlink()
 
 
-def locate_naia() -> list[Path]:
-    candidates = [Path.home() / "Desktop", Path.home() / "Downloads", Path("C:/NAIA"), Path("D:/NAIA")]
+def locate_naia(package_root: Path) -> list[Path]:
+    candidates = [package_root.parent, Path.home() / "Desktop", Path.home() / "Downloads", Path("C:/NAIA"), Path("D:/NAIA")]
+    local_appdata = os.environ.get("LOCALAPPDATA")
+    if local_appdata: candidates.append(Path(local_appdata) / "Programs")
     found: list[Path] = []
     for base in candidates:
         if not base.is_dir():
             continue
         try:
             for child in base.iterdir():
-                if child.is_dir() and child.name.casefold() in ("naia-portable", "naia-portable-2.0.48"):
+                if child.is_dir() and child.name.casefold() in ("naia-portable", "naia-portable-2.0.48") and child not in found:
                     found.append(child)
         except OSError:
             continue
     return found
 
 
-def choose_naia() -> Path:
-    found = locate_naia()
+def choose_naia(package_root: Path, strings: dict[str, str], folder_picker=None) -> Path:
+    print(strings["find_app"])
+    found = locate_naia(package_root)
     for candidate in found:
-        print(f"Detected candidate: {candidate}")
+        print(strings["candidate"].format(path=candidate))
     if len(found) == 1:
-        answer = input("Use this NAIA folder? [Y/n] ").strip().casefold()
+        try: answer = input(strings["confirm_candidate"]).strip().casefold()
+        except EOFError: answer = "n"
         if answer in ("", "y", "yes"):
             return found[0]
     try:
-        import tkinter as tk
-        from tkinter import filedialog
-        root = tk.Tk(); root.withdraw()
-        selected = filedialog.askdirectory(title="Select NAIA Portable folder")
-        root.destroy()
+        if folder_picker is None:
+            import tkinter as tk
+            from tkinter import filedialog
+            root = tk.Tk(); root.withdraw()
+            selected = filedialog.askdirectory(title=strings["choose_folder"])
+            root.destroy()
+        else:
+            selected = folder_picker(strings["choose_folder"])
         if selected:
             return Path(selected)
+        raise PatchError(strings["cancelled"])
     except Exception:
-        pass
-    raw = input("NAIA folder path: ").strip().strip('"')
-    if not raw:
-        raise PatchError("No NAIA folder selected.")
-    return Path(raw)
+        raise PatchError(strings.get("cancelled", "Folder selection cancelled."))
 
 
 def validate_app_root(root: Path, expected_version: str, protected_root: str | None = None) -> Path:
@@ -245,8 +284,9 @@ def state_root_for_app(root: Path, base_name: str) -> Path:
     return Path(root).parent / f"{base_name}-{suffix}"
 
 
-def diagnose_gpu() -> list[dict[str, str]]:
-    print("Display adapter enumeration (diagnostic only; this does not assert AMD support):")
+def diagnose_gpu(strings: dict[str, str] | None = None) -> list[dict[str, str]]:
+    strings = strings or {}
+    print(strings.get("gpu_title", "Display adapter enumeration (diagnostic only):"))
     try:
         command = "Get-PnpDevice -Class Display | ForEach-Object { $v=(Get-PnpDeviceProperty -InstanceId $_.InstanceId -KeyName 'DEVPKEY_Device_DriverVersion' -ErrorAction SilentlyContinue).Data; [pscustomobject]@{FriendlyName=$_.FriendlyName;InstanceId=$_.InstanceId;DriverVersion=$v} } | ConvertTo-Json -Compress"
         result = subprocess.run(["powershell.exe", "-NoProfile", "-Command", command],
@@ -254,22 +294,47 @@ def diagnose_gpu() -> list[dict[str, str]]:
         records = json.loads(result.stdout) if result.stdout.strip() else []
         if isinstance(records, dict): records = [records]
         if result.returncode or not records:
-            print("GPU enumeration unavailable.")
+            print(strings.get("gpu_unavailable", "GPU enumeration unavailable."))
             return []
         else:
             for item in records: print(f"  {item.get('FriendlyName','(unknown)')} [{item.get('InstanceId','')}]" )
             return [{"name": str(item.get("FriendlyName", "")), "pnp_id": str(item.get("InstanceId", "")),
                      "driver_version": str(item.get("DriverVersion", ""))} for item in records]
     except Exception:
-        print("GPU enumeration unavailable.")
+        print(strings.get("gpu_unavailable", "GPU enumeration unavailable."))
         return []
 
 
-def select_language(package_root: Path) -> dict[str, str]:
+def select_language(package_root: Path, requested: str | None = None) -> dict[str, str]:
     options = {"1": "en", "2": "ja", "3": "ko"}
-    choice = input("Choose language: 1 English, 2 日本語, 3 한국어: ").strip()
-    code = options.get(choice, "en")
+    if requested in ("en", "ja", "ko"):
+        code = requested
+    else:
+        try: choice = input("Select UI language: 1 English, 2 Japanese, 3 Korean: ").strip()
+        except EOFError: raise PatchError("Language selection requires --language in headless mode.")
+        code = options.get(choice, "en")
     return json.loads((package_root / "config" / "resources" / f"{code}.json").read_text(encoding="utf-8"))
+
+
+def select_backend(requested: str | None, strings: dict[str, str], headless: bool) -> str:
+    allowed = ("nvidia", AMD_TRANSFORM_PROFILE_ID)
+    if requested in allowed: return requested
+    if headless: return "nvidia"
+    try: answer = input(strings.get("backend_prompt", "Backend: 1 NVIDIA (default), 2 AMD ROCm 10 gfx1201: ")).strip()
+    except EOFError: return "nvidia"
+    return AMD_TRANSFORM_PROFILE_ID if answer == "2" else "nvidia"
+
+
+def protected_root_for(package_root: Path, cfg: dict) -> str | None:
+    env_name = cfg.get("protected_root_env", "NAIA_AMD_PROTECTED_ROOT")
+    if os.environ.get(env_name): return os.environ[env_name]
+    local_file = package_root.parent / "AMD호환패치.local.json"
+    if not local_file.exists(): return None
+    reject_link(local_file)
+    try:
+        return json.loads(local_file.read_text(encoding="utf-8")).get("protected_app_root")
+    except Exception as exc:
+        raise PatchError("Local protected-root settings could not be read; refusing to continue.") from exc
 
 
 def make_patch_plan(package_root: Path, manifest: dict, profile: dict) -> list[dict]:
@@ -295,6 +360,61 @@ def make_patch_plan(package_root: Path, manifest: dict, profile: dict) -> list[d
         plan.append({"path": rel, "original_sha256": expected.upper(),
                      "installed_sha256": item["installed_sha256"].upper(), "bytes": payload})
     if not plan: raise PatchError("The selected support profile has no patch payloads.")
+    return plan
+
+
+def make_transformed_patch_plan(app_root: Path, package_root: Path, manifest: dict,
+                                profile: dict, profile_id: str) -> list[dict]:
+    """Transform exact source-pinned inputs in memory; return transaction rows without writing."""
+    if profile_id != AMD_TRANSFORM_PROFILE_ID or profile.get("id") != profile_id:
+        raise PatchError("Unknown or mismatched AMD transformation profile.")
+    if profile.get("patch_strategy") != "source-transform":
+        raise PatchError("Selected AMD profile has no reviewed source-transform strategy.")
+    trusted_manifest = verify_manifest(package_root)
+    if manifest != trusted_manifest:
+        raise PatchError("Transformer request does not match the authenticated support manifest.")
+    if profile.get("base_files") != AMD_TRANSFORM_BASELINES:
+        raise PatchError("AMD profile baselines differ from code-pinned NAIA sources.")
+    baseline_doc_path = package_root / "config" / "source-baseline.json"
+    reject_link(baseline_doc_path)
+    try:
+        baseline_doc = json.loads(baseline_doc_path.read_text(encoding="utf-8"))
+        listed = {item["path"]: item["sha256"].upper() for item in baseline_doc}
+    except Exception as exc:
+        raise PatchError("Source baseline record is malformed.") from exc
+    if listed != AMD_TRANSFORM_BASELINES:
+        raise PatchError("Source baseline record differs from code-pinned hashes.")
+    if set(AMD_TRANSFORM_BASELINES) != set(profile["base_files"]):
+        raise PatchError("AMD transform must cover all three exact integration targets.")
+
+    source_files = {}
+    for relative, expected in AMD_TRANSFORM_BASELINES.items():
+        source_path = safe_target(app_root, relative)
+        source = source_path.read_bytes()
+        if sha256_bytes(source) != expected:
+            raise PatchError(f"NAIA source baseline mismatch: {relative}")
+        source_files[Path(relative).name] = source
+
+    transformer_path = Path(__file__).with_name("amd_transform.py")
+    reject_link(transformer_path)
+    if sha256_file(transformer_path) != AMD_TRANSFORM_MODULE_SHA256:
+        raise PatchError("AMD transformer differs from the reviewed source pin.")
+    try:
+        from amd_transform import transform_sources
+        baseline_by_name = {Path(relative).name: digest for relative, digest in AMD_TRANSFORM_BASELINES.items()}
+        transformed = transform_sources(source_files, baseline_by_name)
+    except Exception as exc:
+        raise PatchError("Reviewed AMD transformer rejected the selected NAIA sources.") from exc
+    if not isinstance(transformed, dict) or set(transformed) != set(source_files):
+        raise PatchError("AMD transformer returned an unexpected target set.")
+    plan = []
+    for relative in AMD_TRANSFORM_BASELINES:
+        name = Path(relative).name
+        data = transformed[name]
+        if not isinstance(data, bytes):
+            raise PatchError("AMD transformer returned non-byte payload data.")
+        plan.append({"path": relative, "original_sha256": AMD_TRANSFORM_BASELINES[relative],
+                     "installed_sha256": sha256_bytes(data), "bytes": data})
     return plan
 
 
@@ -335,6 +455,8 @@ def assert_not_running() -> None:
 def exclusive_transaction(method):
     @functools.wraps(method)
     def guarded(self, *args, **kwargs):
+        if method.__name__ == "restore" and not self.receipt.exists() and not self.journal.exists():
+            return method(self, *args, **kwargs)
         self.state.mkdir(parents=True, exist_ok=True)
         lock_path = self.state / ".transaction.lock"
         with lock_path.open("a+b") as stream:
@@ -545,6 +667,8 @@ class Transaction:
 
     @exclusive_transaction
     def restore(self) -> list[str]:
+        if not self.receipt.exists() and not self.journal.exists():
+            return []
         self._ensure_identity()
         if self.journal.exists():
             journal = self._read_state(self.journal)
@@ -622,37 +746,69 @@ def restore_atomic(target: Path, data: bytes) -> None:
         if os.path.exists(name): os.unlink(name)
 
 
+def configure_utf8_streams() -> None:
+    """Use UTF-8 for this process only; wrappers restore the console setting afterward."""
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            try:
+                reconfigure(encoding="utf-8", errors="replace")
+            except (OSError, ValueError):
+                pass
+
+
 def cli() -> int:
+    configure_utf8_streams()
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=("install", "uninstall", "diagnose"))
     parser.add_argument("--package-root", type=Path, required=True)
     parser.add_argument("--app-root", type=Path)
+    parser.add_argument("--language", choices=("en", "ja", "ko"))
+    parser.add_argument("--backend-profile", choices=("nvidia", AMD_TRANSFORM_PROFILE_ID))
     args = parser.parse_args()
     package = args.package_root.resolve()
     cfg = json.loads((package / "config" / "settings.json").read_text(encoding="utf-8"))
+    global ACTIVE_TEXT
     if args.command == "diagnose": diagnose_gpu(); return 0
+    ACTIVE_TEXT = select_language(package, args.language)
+    text = ACTIVE_TEXT
+    print(text["title"])
+    protected = protected_root_for(package, cfg)
     if args.command == "install":
-        text = select_language(package)
-        print(text["title"])
-        gpu_records = diagnose_gpu()
-        manifest = verify_manifest(package)  # Disabled default exits before asking to elevate/write.
-        protected = os.environ.get(cfg.get("protected_root_env", "NAIA_AMD_PROTECTED_ROOT"))
-        root = validate_app_root(args.app_root or choose_naia(), cfg["expected_naia_version"], protected)
+        selected = args.app_root if args.app_root else choose_naia(package, text)
+        root = validate_app_root(selected, cfg["expected_naia_version"], protected)
+        gpu_records = diagnose_gpu(text)
+        backend = select_backend(args.backend_profile, text, headless=bool(args.app_root))
+        if backend == "nvidia":
+            print(text.get("nvidia_active", "Existing NVIDIA profile remains selected."))
+            return 0
+        manifest = json.loads((package / "config" / cfg["support_manifest_path"]).read_text(encoding="utf-8"))
+        if manifest.get("enabled") is not True:
+            print(text["unsupported"])
+            return 2
+        manifest = verify_manifest(package)
         assert_not_running()
         profile = match_profile(manifest, gpu_records, windows_release())
-        plan = make_patch_plan(package, manifest, profile)
+        if backend == AMD_TRANSFORM_PROFILE_ID:
+            if profile.get("id") != backend:
+                raise PatchError("Exact selected AMD profile did not match the detected system.")
+            plan = make_transformed_patch_plan(root, package, manifest, profile, backend)
+        else:
+            plan = make_patch_plan(package, manifest, profile)
         state = state_root_for_app(root, cfg["backup_directory_name"])
         Transaction(root, state).install(plan, cfg["expected_naia_version"], manifest["app"]["version"])
         print(text["install_done"])
         return 0
-    protected = os.environ.get(cfg.get("protected_root_env", "NAIA_AMD_PROTECTED_ROOT"))
-    app = validate_app_root(args.app_root or choose_naia(), cfg["expected_naia_version"], protected)
+    protected = protected_root_for(package, cfg)
+    selected = args.app_root if args.app_root else choose_naia(package, text)
+    app = validate_app_root(selected, cfg["expected_naia_version"], protected)
     assert_not_running()
     state = state_root_for_app(app, cfg["backup_directory_name"])
     tx = Transaction(app, state)
     conflicts = tx.restore()
-    if conflicts: print("Conflicts preserved: " + ", ".join(conflicts))
-    else: print("Restore complete (or nothing to restore).")
+    if conflicts: print(text["conflicts"].format(paths=", ".join(conflicts)))
+    elif not tx.receipt.exists() and not tx.journal.exists(): print(text["nothing_to_restore"])
+    else: print(text["restore_done"])
     return 0
 
 
@@ -660,5 +816,6 @@ if __name__ == "__main__":
     try:
         raise SystemExit(cli())
     except PatchError as exc:
-        print(f"Stopped safely: {exc}", file=sys.stderr)
+        message = ACTIVE_TEXT.get("safe_error", "Operation stopped safely.")
+        print(message, file=sys.stderr)
         raise SystemExit(2)

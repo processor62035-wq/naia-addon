@@ -1,6 +1,7 @@
-import hashlib, importlib.util, json, os, tempfile, unittest
+import hashlib, importlib.util, json, os, tempfile, unittest, sys, io
 from pathlib import Path
 from unittest import mock
+from contextlib import redirect_stdout
 
 SPEC=importlib.util.spec_from_file_location("naia_patch",Path(__file__).with_name("naia_patch.py"))
 engine=importlib.util.module_from_spec(SPEC); SPEC.loader.exec_module(engine)
@@ -142,6 +143,103 @@ class Tests(unittest.TestCase):
   lock=json.loads((PACKAGE/"config/release-candidate-lock.json").read_text(encoding="utf-8"))
   self.assertEqual(len(lock["reported_wheels"]),9)
   self.assertTrue(all(x["url"] and "%2B" in x["url"] if "+rocm10.0.0" in x["version"] else x["url"] for x in lock["reported_wheels"]))
-  self.assertTrue(all(x["sha256"] is None and x["trust"]=="unverified" for x in lock["reported_wheels"]))
+  self.assertTrue(all(x["sha256"] is None and x["trust"]=="developer-reviewed-content-pin-no-manufacturer-signature" and x["developer_sha256"]==x["observed_sha256"] for x in lock["reported_wheels"]))
+  self.assertEqual(lock["status"],"developer-pinned-candidate-content-identity-not-installable")
+  manifest=json.loads((PACKAGE/"config/manifest.json").read_text(encoding="utf-8")); self.assertFalse(manifest["enabled"])
+ def test_transformer_pin_and_profile_gate(self):
+  module=PACKAGE/"config/scripts/amd_transform.py"
+  self.assertEqual(engine.sha256_file(module),engine.AMD_TRANSFORM_MODULE_SHA256)
+  with self.assertRaisesRegex(engine.PatchError,"Unknown or mismatched"):
+   engine.make_transformed_patch_plan(self.app,PACKAGE,{}, {"id":engine.AMD_TRANSFORM_PROFILE_ID}, "nvidia")
+
+ def test_synthetic_transform_install_restore(self):
+  transform_path=PACKAGE/"config/scripts/amd_transform.py"
+  transform_spec=importlib.util.spec_from_file_location("amd_transform_test",transform_path)
+  transform=importlib.util.module_from_spec(transform_spec);transform_spec.loader.exec_module(transform)
+  sources={
+   "manifest.py": b"# synthetic manifest fixture\nVALUE = 1\n",
+   "install.py": b'''from pathlib import Path
+import subprocess, time
+class ManagedEngineError(RuntimeError): pass
+class GpuInfo:
+    source: str = "nvidia-smi"
+def validate_gpu(gpu):
+    pass
+class AnimaInstallJob:
+    def __init__(self, *, save_root: Path, settings: AnimaSettings, opener=None, run_7z=None, gpu_probe=None,
+                 disk_free=None, runtime_factory=None, on_ready=None, clock=time.time, forbidden_roots=(),
+                 system_directory=None):
+        self.save_root, self.settings = Path(save_root), settings
+    def inspect(self, engine_root=None, model_dirs=None):
+        return None
+''',
+   "runtime.py": b'''from pathlib import Path
+import subprocess, time
+class ManagedEngineError(RuntimeError): pass
+class Runtime:
+    def __init__(self, engine_root: Path, *, runtime_id: str, reserve_vram_gb: float, idle_minutes: int,
+                 model_config=None, command_builder=None, popen=subprocess.Popen, clock=time.monotonic):
+        self.engine_root, self.runtime_id = Path(engine_root).resolve(), runtime_id
+        self.model_config_path = None
+    def _command(self, port):
+        return None
+    def _engine_environment(self):
+        env = clean_environment()
+        return env
+    def health(self, stats):
+                    if not any(x.get("type") == "cuda" for x in stats.get("devices", [])):
+                        return False
+'''
+  }
+  baseline={name:h(data) for name,data in sources.items()}
+  transformed=transform.transform_sources(sources,baseline)
+  self.assertEqual(set(transformed),set(sources))
+  relative={"manifest.py":"resources/naia-backend/core/anima_engine/manifest.py",
+            "install.py":"resources/naia-backend/core/anima_engine/install.py",
+            "runtime.py":"resources/naia-backend/core/anima_engine/runtime.py"}
+  rows=[]
+  for name,old in sources.items():
+   target=self.app/relative[name];target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(old)
+   new=transformed[name]
+   rows.append({"path":relative[name],"original_sha256":h(old),"installed_sha256":h(new),"bytes":new})
+  tx=engine.Transaction(self.app,self.state,fixture_mode=True)
+  tx.install(rows,"synthetic","synthetic")
+  for row in rows:self.assertEqual((self.app/row["path"]).read_bytes(),row["bytes"])
+  self.assertEqual(tx.restore(),[])
+  for name,old in sources.items():self.assertEqual((self.app/relative[name]).read_bytes(),old)
+
+ def test_headless_install_diagnoses_then_refuses_disabled_manifest(self):
+  with tempfile.TemporaryDirectory() as d:
+   app=Path(d)/"selected app";app.mkdir()
+   argv=["naia_patch.py","install","--package-root",str(PACKAGE),"--app-root",str(app),"--language","ko","--backend-profile","amd-rocm10.0-gfx1201-windows11-25h2-cp313"]
+   out=io.StringIO()
+   with mock.patch.object(sys,"argv",argv),mock.patch.object(engine,"validate_app_root",return_value=app),mock.patch.object(engine,"diagnose_gpu",return_value=[]),mock.patch.object(engine,"verify_manifest",side_effect=AssertionError("disabled gate must precede trust/install")),redirect_stdout(out):
+    self.assertEqual(engine.cli(),2)
+   korean=json.loads((PACKAGE/"config/resources/ko.json").read_text(encoding="utf-8"))
+   self.assertIn("\uD638\uD658",korean["title"])
+   self.assertIn(korean["title"],out.getvalue())
+   self.assertIn(korean["unsupported"],out.getvalue())
+   self.assertEqual(out.getvalue().encode("utf-8").decode("utf-8"),out.getvalue())
+ def test_uninstall_without_receipt_creates_no_state(self):
+  with tempfile.TemporaryDirectory() as d:
+   app=Path(d)/"selected app";app.mkdir();state=engine.state_root_for_app(app,".backup")
+   argv=["naia_patch.py","uninstall","--package-root",str(PACKAGE),"--app-root",str(app),"--language","ko"]
+   out=io.StringIO()
+   with mock.patch.object(sys,"argv",argv),mock.patch.object(engine,"validate_app_root",return_value=app),mock.patch.object(engine,"assert_not_running"),redirect_stdout(out):
+    self.assertEqual(engine.cli(),0)
+   self.assertFalse(state.exists());self.assertIn("패치 기록이 없습니다",out.getvalue())
+ def test_folder_picker_cancel_and_progress_event_localization(self):
+  with tempfile.TemporaryDirectory() as d:
+   with mock.patch.object(engine,"locate_naia",return_value=[]):
+    with self.assertRaises(engine.PatchError):engine.choose_naia(Path(d),json.loads((PACKAGE/"config/resources/ko.json").read_text(encoding="utf-8")),folder_picker=lambda _:"")
+  strings=json.loads((PACKAGE/"config/resources/en.json").read_text(encoding="utf-8"))
+  line=engine.render_download_event({"event":"progress","artifact":"x.whl","received_bytes":20,"total_bytes":None,"percent":None,"bytes_per_second":5,"attempt":1},strings)
+  self.assertIn("size unknown",line);self.assertNotIn("%",line)
+ def test_wrapper_arguments_and_uac_exit_are_forwarded(self):
+  for script in ("install-entry.ps1","uninstall-entry.ps1"):
+   body=(PACKAGE/"config/scripts"/script).read_text(encoding="utf-8")
+   self.assertIn("-Wait -PassThru",body);self.assertIn("$child.ExitCode",body);self.assertIn("--app-root",body);self.assertIn("--language",body);self.assertIn("PYTHONIOENCODING",body);self.assertIn("finally",body);self.assertIn("[Console]::OutputEncoding = $oldEncoding",body)
+  for script in ("Install.cmd","Uninstall.cmd"):
+   self.assertIn("%*",(PACKAGE/script).read_text(encoding="utf-8"))
 
 if __name__=="__main__":unittest.main(verbosity=2)

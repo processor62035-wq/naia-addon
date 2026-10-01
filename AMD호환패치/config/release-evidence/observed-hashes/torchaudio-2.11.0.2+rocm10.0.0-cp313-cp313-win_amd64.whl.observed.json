@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "observed-project-computed-not-trusted",
+  "name": "torchaudio",
+  "version": "2.11.0.2+rocm10.0.0",
+  "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/torchaudio/torchaudio-2.11.0.2%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+  "source_url": "https://stable.repo.amd.com/rocm/whl-next/torchaudio/",
+  "filename": "torchaudio-2.11.0.2+rocm10.0.0-cp313-cp313-win_amd64.whl",
+  "expected_size_bytes": 2086468,
+  "received_size_bytes": 2086468,
+  "sha256": "5d5e536f34d971e0d20523ae9719ad3ba865e50b43ff3c2ccb730fb1a19cd81e",
+  "trust": "unverified",
+  "generated_utc": "2026-10-01T12:23:29Z"
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "observed-project-computed-not-trusted",
+  "name": "rocm-bootstrap",
+  "version": "0.1.0",
+  "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/rocm_bootstrap-0.1.0-py3-none-any.whl",
+  "source_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/",
+  "filename": "rocm_bootstrap-0.1.0-py3-none-any.whl",
+  "expected_size_bytes": 27015,
+  "received_size_bytes": 27015,
+  "sha256": "33e3d4dad086b1f0e06bc049a618ca874d4fb72f758fff00676e23d2a644b652",
+  "trust": "unverified",
+  "generated_utc": "2026-10-01T12:26:43Z"
+}

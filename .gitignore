@@ -8,6 +8,7 @@ settings.json
 secrets.*
 *.pem
 *.key
+AMD호환패치.local.json
 
 # App/runtime state and user records
 user-data/
@@ -55,5 +56,8 @@ venv/
 .idea/
 .vscode/
 
-# Local NAIA fixture copy: never publish application source.
+# Private source fixtures and local release downloads
 /fixture/
+/private-patch-work/
+/staging/
+/AMD호환패치/config/다운로드/candidate-staging/

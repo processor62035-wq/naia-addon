@@ -1,0 +1,33 @@
+{
+  "checked_utc": "2026-10-01T12:25:35.830734+00:00",
+  "results": [
+    {
+      "name": "rocm-bootstrap",
+      "index_page": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/",
+      "index_status": 200,
+      "index_final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/",
+      "filename": "rocm_bootstrap-0.1.0-py3-none-any.whl",
+      "links_found": 1,
+      "index_checked_utc": "2026-10-01T12:25:33.874318+00:00",
+      "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/rocm_bootstrap-0.1.0-py3-none-any.whl",
+      "status_code": 200,
+      "final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/rocm_bootstrap-0.1.0-py3-none-any.whl",
+      "content_length": "27015",
+      "status": "confirmed"
+    },
+    {
+      "name": "rocm",
+      "index_page": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/",
+      "index_status": 200,
+      "index_final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/",
+      "filename": "rocm-10.0.0.tar.gz",
+      "links_found": 1,
+      "index_checked_utc": "2026-10-01T12:25:35.150444+00:00",
+      "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/rocm-10.0.0.tar.gz",
+      "status_code": 200,
+      "final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/rocm-10.0.0.tar.gz",
+      "content_length": "24780",
+      "status": "confirmed"
+    }
+  ]
+}

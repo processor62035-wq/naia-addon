@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "observed-project-computed-not-trusted",
+  "name": "torch",
+  "version": "2.13.0+rocm10.0.0",
+  "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/torch/torch-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+  "source_url": "https://stable.repo.amd.com/rocm/whl-next/torch/",
+  "filename": "torch-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl",
+  "expected_size_bytes": 113438915,
+  "received_size_bytes": 113438915,
+  "sha256": "1d63976f2fba47c06f5eda6aadc7acec704a19e341c371b6792a9d82b67c091f",
+  "trust": "unverified",
+  "generated_utc": "2026-10-01T12:23:23Z"
+}

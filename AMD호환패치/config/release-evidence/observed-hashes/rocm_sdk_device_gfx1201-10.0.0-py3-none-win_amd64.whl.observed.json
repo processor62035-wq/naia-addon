@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "observed-project-computed-not-trusted",
+  "name": "rocm-sdk-device-gfx1201",
+  "version": "10.0.0",
+  "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-device-gfx1201/rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl",
+  "source_url": "https://stable.repo.amd.com/rocm/whl-next/rocm-sdk-device-gfx1201/",
+  "filename": "rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl",
+  "expected_size_bytes": 312303802,
+  "received_size_bytes": 312303802,
+  "sha256": "c6e4c5a0da941230bed975765e644597570081c9a41654d5a052c277167f4576",
+  "trust": "unverified",
+  "generated_utc": "2026-10-01T12:24:42Z"
+}

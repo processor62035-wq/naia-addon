@@ -1,31 +1,264 @@
 {
   "schema_version": 1,
-  "status": "candidate-untrusted-disabled",
-  "target": {"python_abi": "cp313-cp313-win_amd64", "device_profile": "gfx1201", "rocm": "10.0.0"},
+  "status": "developer-pinned-candidate-content-identity-not-installable",
+  "target": {
+    "python_abi": "cp313-cp313-win_amd64",
+    "device_profile": "gfx1201",
+    "rocm": "10.0.0"
+  },
   "official_index": "https://stable.repo.amd.com/rocm/whl-next/",
   "reported_nine_wheels_bytes": 1512827661,
   "reported_total_bytes_all_11": 1512879456,
   "reported_wheels": [
-    {"name":"torch","version":"2.13.0+rocm10.0.0","filename":"torch-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/torch/torch-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":113438915,"sha256":null,"trust":"unverified"},
-    {"name":"torchvision","version":"0.28.0+rocm10.0.0","filename":"torchvision-0.28.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/torchvision/torchvision-0.28.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":903428,"sha256":null,"trust":"unverified"},
-    {"name":"torchaudio","version":"2.11.0.2+rocm10.0.0","filename":"torchaudio-2.11.0.2+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/torchaudio/torchaudio-2.11.0.2%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":2086468,"sha256":null,"trust":"unverified"},
-    {"name":"amd-torch-device-gfx1201","version":"2.13.0+rocm10.0.0","filename":"amd_torch_device_gfx1201-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx1201/amd_torch_device_gfx1201-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":51130924,"sha256":null,"trust":"unverified"},
-    {"name":"amd-torch-device-gfx12-0","version":"2.13.0+rocm10.0.0","filename":"amd_torch_device_gfx12_0-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx12-0/amd_torch_device_gfx12_0-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":157950127,"sha256":null,"trust":"unverified"},
-    {"name":"amd-torchvision-device-gfx1201","version":"0.28.0+rocm10.0.0","filename":"amd_torchvision_device_gfx1201-0.28.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torchvision-device-gfx1201/amd_torchvision_device_gfx1201-0.28.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":131261,"sha256":null,"trust":"unverified"},
-    {"name":"rocm-sdk-core","version":"10.0.0","filename":"rocm_sdk_core-10.0.0-py3-none-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-core/rocm_sdk_core-10.0.0-py3-none-win_amd64.whl","size_bytes":758050981,"sha256":null,"trust":"unverified"},
-    {"name":"rocm-sdk-libraries","version":"10.0.0","filename":"rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-libraries/rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl","size_bytes":116831755,"sha256":null,"trust":"unverified"},
-    {"name":"rocm-sdk-device-gfx1201","version":"10.0.0","filename":"rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-device-gfx1201/rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl","size_bytes":312303802,"sha256":null,"trust":"unverified"}
+    {
+      "name": "torch",
+      "version": "2.13.0+rocm10.0.0",
+      "filename": "torch-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/torch/torch-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+      "size_bytes": 113438915,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/torch/",
+        "checked_utc": "2026-10-01T12:22:21.511584+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/torch/torch-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+        "content_length_bytes": 113438915
+      },
+      "observed_sha256": "1d63976f2fba47c06f5eda6aadc7acec704a19e341c371b6792a9d82b67c091f",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "1d63976f2fba47c06f5eda6aadc7acec704a19e341c371b6792a9d82b67c091f",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "torchvision",
+      "version": "0.28.0+rocm10.0.0",
+      "filename": "torchvision-0.28.0+rocm10.0.0-cp313-cp313-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/torchvision/torchvision-0.28.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+      "size_bytes": 903428,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/torchvision/",
+        "checked_utc": "2026-10-01T12:22:22.174945+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/torchvision/torchvision-0.28.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+        "content_length_bytes": 903428
+      },
+      "observed_sha256": "9ec85399f02e4d8ace26061248e74e418b46c9fc66e6c1b5e630b598b55d84e4",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "9ec85399f02e4d8ace26061248e74e418b46c9fc66e6c1b5e630b598b55d84e4",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "torchaudio",
+      "version": "2.11.0.2+rocm10.0.0",
+      "filename": "torchaudio-2.11.0.2+rocm10.0.0-cp313-cp313-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/torchaudio/torchaudio-2.11.0.2%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+      "size_bytes": 2086468,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/torchaudio/",
+        "checked_utc": "2026-10-01T12:22:22.871782+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/torchaudio/torchaudio-2.11.0.2%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+        "content_length_bytes": 2086468
+      },
+      "observed_sha256": "5d5e536f34d971e0d20523ae9719ad3ba865e50b43ff3c2ccb730fb1a19cd81e",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "5d5e536f34d971e0d20523ae9719ad3ba865e50b43ff3c2ccb730fb1a19cd81e",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "amd-torch-device-gfx1201",
+      "version": "2.13.0+rocm10.0.0",
+      "filename": "amd_torch_device_gfx1201-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx1201/amd_torch_device_gfx1201-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+      "size_bytes": 51130924,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/amd-torch-device-gfx1201/",
+        "checked_utc": "2026-10-01T12:22:23.554082+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx1201/amd_torch_device_gfx1201-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+        "content_length_bytes": 51130924
+      },
+      "observed_sha256": "551b87db1cc4a37857477af73151fb1bd95a7a16a44dc547289492ba4f1c36b3",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "551b87db1cc4a37857477af73151fb1bd95a7a16a44dc547289492ba4f1c36b3",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "amd-torch-device-gfx12-0",
+      "version": "2.13.0+rocm10.0.0",
+      "filename": "amd_torch_device_gfx12_0-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx12-0/amd_torch_device_gfx12_0-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+      "size_bytes": 157950127,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/amd-torch-device-gfx12-0/",
+        "checked_utc": "2026-10-01T12:22:24.235576+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx12-0/amd_torch_device_gfx12_0-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+        "content_length_bytes": 157950127
+      },
+      "observed_sha256": "bf20aca15279eebab898f76b6a723584565624a823bf2fcdb93b6a5b74f5ba3a",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "bf20aca15279eebab898f76b6a723584565624a823bf2fcdb93b6a5b74f5ba3a",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "amd-torchvision-device-gfx1201",
+      "version": "0.28.0+rocm10.0.0",
+      "filename": "amd_torchvision_device_gfx1201-0.28.0+rocm10.0.0-cp313-cp313-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torchvision-device-gfx1201/amd_torchvision_device_gfx1201-0.28.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+      "size_bytes": 131261,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/amd-torchvision-device-gfx1201/",
+        "checked_utc": "2026-10-01T12:22:24.897452+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torchvision-device-gfx1201/amd_torchvision_device_gfx1201-0.28.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+        "content_length_bytes": 131261
+      },
+      "observed_sha256": "ff8276018b0c837783c25706da186a55fd6ccbf571c9d762cccdd270b6876418",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "ff8276018b0c837783c25706da186a55fd6ccbf571c9d762cccdd270b6876418",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "rocm-sdk-core",
+      "version": "10.0.0",
+      "filename": "rocm_sdk_core-10.0.0-py3-none-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-core/rocm_sdk_core-10.0.0-py3-none-win_amd64.whl",
+      "size_bytes": 758050981,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/rocm-sdk-core/",
+        "checked_utc": "2026-10-01T12:22:25.344995+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-core/rocm_sdk_core-10.0.0-py3-none-win_amd64.whl",
+        "content_length_bytes": 758050981
+      },
+      "observed_sha256": "066195cb0f7df02e6009facb17652dd992d13fae44d87652e5ab928d5b4f0851",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "066195cb0f7df02e6009facb17652dd992d13fae44d87652e5ab928d5b4f0851",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "rocm-sdk-libraries",
+      "version": "10.0.0",
+      "filename": "rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-libraries/rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl",
+      "size_bytes": 116831755,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/rocm-sdk-libraries/",
+        "checked_utc": "2026-10-01T12:22:26.069034+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-libraries/rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl",
+        "content_length_bytes": 116831755
+      },
+      "observed_sha256": "bfc7a1bd3b6050fb4d36d8ac2eea80d3afd70c5604a29142463d6cb890fc73bf",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "bfc7a1bd3b6050fb4d36d8ac2eea80d3afd70c5604a29142463d6cb890fc73bf",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "rocm-sdk-device-gfx1201",
+      "version": "10.0.0",
+      "filename": "rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl",
+      "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-device-gfx1201/rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl",
+      "size_bytes": 312303802,
+      "sha256": null,
+      "trust": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "official_verification": {
+        "status": "confirmed",
+        "index_page": "https://stable.repo.amd.com/rocm/whl-next/rocm-sdk-device-gfx1201/",
+        "checked_utc": "2026-10-01T12:22:26.751525+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-device-gfx1201/rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl",
+        "content_length_bytes": 312303802
+      },
+      "observed_sha256": "c6e4c5a0da941230bed975765e644597570081c9a41654d5a052c277167f4576",
+      "observed_sha256_status": "project-computed-not-trusted",
+      "developer_sha256": "c6e4c5a0da941230bed975765e644597570081c9a41654d5a052c277167f4576",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    }
   ],
   "observed_only": [
-    {"name":"rocm-bootstrap","version":"0.1.0","size_bytes":27015,"observed_sha256":"33e3d4dad086b1f0e06bc049a618ca874d4fb72f758fff00676e23d2a644b652","url":null,"status":"observed-only-not-trusted"},
-    {"name":"rocm","version":"10.0.0","distribution":"sdist","size_bytes":24780,"observed_sha256":"65b5982249612a310135f5e061b9f28909e8ad718a1ddb3f1abba92298b7216b","url":null,"status":"observed-only-not-trusted"}
+    {
+      "name": "rocm-bootstrap",
+      "version": "0.1.0",
+      "size_bytes": 27015,
+      "observed_sha256": "33e3d4dad086b1f0e06bc049a618ca874d4fb72f758fff00676e23d2a644b652",
+      "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/rocm_bootstrap-0.1.0-py3-none-any.whl",
+      "status": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "filename": "rocm_bootstrap-0.1.0-py3-none-any.whl",
+      "official_index_page": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/",
+      "official_verification": {
+        "status": "confirmed",
+        "checked_utc": "2026-10-01T12:25:33.874318+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-bootstrap/rocm_bootstrap-0.1.0-py3-none-any.whl",
+        "content_length_bytes": 27015
+      },
+      "developer_sha256": "33e3d4dad086b1f0e06bc049a618ca874d4fb72f758fff00676e23d2a644b652",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    },
+    {
+      "name": "rocm",
+      "version": "10.0.0",
+      "distribution": "sdist",
+      "size_bytes": 24780,
+      "observed_sha256": "65b5982249612a310135f5e061b9f28909e8ad718a1ddb3f1abba92298b7216b",
+      "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/rocm-10.0.0.tar.gz",
+      "status": "developer-reviewed-content-pin-no-manufacturer-signature",
+      "filename": "rocm-10.0.0.tar.gz",
+      "official_index_page": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/",
+      "official_verification": {
+        "status": "confirmed",
+        "checked_utc": "2026-10-01T12:25:35.150444+00:00",
+        "http_status": 200,
+        "final_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/rocm-10.0.0.tar.gz",
+        "content_length_bytes": 24780
+      },
+      "developer_sha256": "65b5982249612a310135f5e061b9f28909e8ad718a1ddb3f1abba92298b7216b",
+      "developer_pin_status": "developer-reviewed-project-computed-not-manufacturer-signed"
+    }
   ],
   "dependency_gaps": [
-    "Resolve every normal dependency to exact official artifact URL, compatible version, size and full SHA-256.",
-    "Review torch dependency metadata and PyPI candidates, including yanked/revoked status at release time.",
-    "rocm is an sdist: lock setuptools>=70.2.0 and all isolated build inputs plus output hashes, or review a no-build-isolation build path; global --only-binary=:all: is not valid.",
-    "Set ROCM_SDK_TARGET_FAMILY=gfx1201 only in the build subprocess environment after review.",
-    "Validate Python 3.13.16 installer signature/provenance before any private runtime setup."
+    "The 11 PyPI closure candidates have exact-version JSON metadata and publisher hashes recorded in release-candidate-lock-plan.json, but candidate wheel bytes were not downloaded or locally verified.",
+    "Full ComfyUI v0.22.0 Windows CPython 3.13 dependency closure, artifact hashes/licenses, and NAIA ANIMA integration are unresolved.",
+    "rocm 10.0.0 is an sdist. Its exact isolated build inputs, dynamic requirements, reproducible build output, and resulting artifact hash are not verified; no build was run.",
+    "Python 3.13.16 publisher checksum metadata is recorded, but installer bytes/signatures and the actual managed-runtime integration are unverified.",
+    "Exact GPU PnP ID, driver, HIP runtime device index, Windows 26H2 support, and real ANIMA GPU/VRAM/CPU-fallback behavior remain unverified."
   ],
-  "policy": "Candidate metadata never authorizes download, execution, or installation. The nine direct URLs, filenames, versions, and sizes were supplied as candidate evidence and remain unverified until independently checked against official metadata. SHA-256 values are null. Downloaded-byte hashes are project-computed and require review, not vendor signatures."
+  "policy": "All eleven artifact URLs, versions, filenames, sizes, locally computed SHA-256 values, and static wheel/sdist metadata were independently reviewed against AMD index/HEAD evidence and staged bytes. developer_sha256 is a project-reviewed content pin, not an AMD-published digest, manufacturer signature, or runtime-compatibility approval. sha256 remains null where AMD publishes no digest. The production manifest remains disabled because runtime install/call-site integration and target hardware/OS support are incomplete.",
+  "official_metadata_checked_utc": "2026-10-01T12:22:26.752526+00:00",
+  "candidate_downloaded_bytes": 1512879456,
+  "developer_review": {
+    "reviewed_utc": "2026-10-01",
+    "review_scope": "official AMD index link provenance, exact file/version/target/size, local SHA-256, and static archive METADATA/WHEEL review for all 11 staged artifacts",
+    "reviewer": "independent Sol QC",
+    "limitations": [
+      "No AMD-published SHA-256/signature was found; developer pins identify reviewed bytes only.",
+      "No runtime install or import was performed.",
+      "ROCm sdist build output and complete ComfyUI/Python runtime dependency closure remain unverified."
+    ]
+  }
 }

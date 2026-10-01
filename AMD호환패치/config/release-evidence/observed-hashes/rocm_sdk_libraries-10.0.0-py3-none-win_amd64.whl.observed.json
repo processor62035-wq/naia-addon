@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "observed-project-computed-not-trusted",
+  "name": "rocm-sdk-libraries",
+  "version": "10.0.0",
+  "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-libraries/rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl",
+  "source_url": "https://stable.repo.amd.com/rocm/whl-next/rocm-sdk-libraries/",
+  "filename": "rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl",
+  "expected_size_bytes": 116831755,
+  "received_size_bytes": 116831755,
+  "sha256": "bfc7a1bd3b6050fb4d36d8ac2eea80d3afd70c5604a29142463d6cb890fc73bf",
+  "trust": "unverified",
+  "generated_utc": "2026-10-01T12:24:31Z"
+}

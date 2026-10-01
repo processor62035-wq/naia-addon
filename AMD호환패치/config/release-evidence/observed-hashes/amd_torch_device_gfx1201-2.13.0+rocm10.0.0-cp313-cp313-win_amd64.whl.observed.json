@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "observed-project-computed-not-trusted",
+  "name": "amd-torch-device-gfx1201",
+  "version": "2.13.0+rocm10.0.0",
+  "url": "https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx1201/amd_torch_device_gfx1201-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl",
+  "source_url": "https://stable.repo.amd.com/rocm/whl-next/amd-torch-device-gfx1201/",
+  "filename": "amd_torch_device_gfx1201-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl",
+  "expected_size_bytes": 51130924,
+  "received_size_bytes": 51130924,
+  "sha256": "551b87db1cc4a37857477af73151fb1bd95a7a16a44dc547289492ba4f1c36b3",
+  "trust": "unverified",
+  "generated_utc": "2026-10-01T12:23:34Z"
+}

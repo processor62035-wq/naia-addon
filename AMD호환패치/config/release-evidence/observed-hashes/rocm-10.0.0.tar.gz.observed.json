@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "observed-project-computed-not-trusted",
+  "name": "rocm",
+  "version": "10.0.0",
+  "url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/rocm-10.0.0.tar.gz",
+  "source_url": "https://stable.repo.amd.com/rocm/core/whl-next/rocm/",
+  "filename": "rocm-10.0.0.tar.gz",
+  "expected_size_bytes": 24780,
+  "received_size_bytes": 24780,
+  "sha256": "65b5982249612a310135f5e061b9f28909e8ad718a1ddb3f1abba92298b7216b",
+  "trust": "unverified",
+  "generated_utc": "2026-10-01T12:26:43Z"
+}
