@@ -1,0 +1,54 @@
+# Local secrets and user-specific settings
+.env
+.env.*
+!.env.example
+settings.json
+!tests/fixtures/**/settings.json
+!examples/**/settings.json
+secrets.*
+*.pem
+*.key
+
+# App/runtime state and user records
+user-data/
+cache/
+logs/
+output/
+downloads/
+runtime-env/
+.deps/
+build/
+dist/
+release/
+.naia-patch-backup/
+*.zip
+*.7z
+*.patch-backup
+*.sqlite
+*.sqlite3
+*.db
+!tests/fixtures/**/*.sqlite
+!tests/fixtures/**/*.sqlite3
+!tests/fixtures/**/*.db
+*.parquet
+
+# Models and runtime installers
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.gguf
+*.exe
+*.dll
+*.whl
+
+# Python/editor artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.idea/
+.vscode/
+
