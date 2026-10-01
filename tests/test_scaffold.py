@@ -62,6 +62,9 @@ class RepositoryScaffoldTests(unittest.TestCase):
             "pinned versions",
             "SHA-256",
             "backup/restore",
+            "reliable total size",
+            "completed bytes/total bytes",
+            "retry/cancel states",
             "must not run UAC",
         ):
             self.assertIn(requirement, spec)
