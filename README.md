@@ -13,7 +13,9 @@ The first implementation decision is therefore whether NAIA gains a supported ru
 
 The requested Windows installer flow is captured in [docs/installer-design.md](docs/installer-design.md). The installer and patch are not implemented in this scaffold commit.
 
-ROCm 10 has official Windows guidance for specific Radeon GPU, driver, OS, and PyTorch combinations. Support must be checked against the exact target hardware before selecting a package. The Codex cloud environment is for CPU-only static and mocked checks; it cannot prove GPU acceleration.
+As checked on 2026-10-01, the official ComfyUI Windows guide describes a ROCm 10.0 path using Windows 11, a current AMD graphics driver, 64-bit Python 3.13, and `device-gfx1201` for both RX 9070 and RX 9070 XT. This identifies a candidate upstream stack, not a tested NAIA runtime package. The guide does not identify Windows 11 26H2 separately, and it does not supply the signed, hash-pinned artifact set or exact NAIA integration patch needed by this repository. The installer must therefore refuse to offer that combination until those checks are complete. See [AMD/ComfyUI evidence and release gates](docs/amd-evidence.md).
+
+The Codex cloud environment is for CPU-only static and mocked checks; it cannot prove GPU acceleration.
 
 ## Cloud development
 

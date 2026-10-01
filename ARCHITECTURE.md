@@ -40,3 +40,9 @@ Cloud checks cover only gate 1. No GPU success claim is valid before gate 3.
 
 The Windows installer flow, language selection, safe target discovery, supported GPU selection, package verification, and patch/restore stages are specified in `docs/installer-design.md`.
 
+## Upstream AMD candidate evidence (checked 2026-10-01)
+
+The current official ComfyUI Windows guide names RX 9070 and RX 9070 XT together under `device-gfx1201`, and describes a Windows 11 / current AMD driver / 64-bit Python 3.13 path using ROCm 10.0.0. This is upstream installation guidance only. It does not establish that NAIA's pinned NVIDIA bundle can be replaced safely, that NAIA ANIMA accepts the external AMD engine, or that Windows 11 26H2 is supported by AMD's full compatibility matrix. See `docs/amd-evidence.md` for source links and the exact release gates.
+
+The package's support catalog must distinguish the RX 9070 from the RX 9070 XT even though both map to `gfx1201`. A shared architecture ID is not proof that their entire driver/runtime combinations are identical. Until an exact Windows build and official compatibility row are confirmed, both installation eligibility and end-to-end NAIA acceleration remain blocked.
+

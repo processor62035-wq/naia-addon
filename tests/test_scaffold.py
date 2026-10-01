@@ -54,6 +54,20 @@ class RepositoryScaffoldTests(unittest.TestCase):
         self.assertIn("does not claim to enable amd acceleration yet", readme)
         self.assertIn("no gpu success claim is valid before gate 3", architecture)
 
+    def test_amd_evidence_separates_upstream_candidate_from_naia_support(self):
+        evidence = (ROOT / "docs" / "amd-evidence.md").read_text(encoding="utf-8")
+        for requirement in (
+            "2026-10-01",
+            "RX 9070 and RX 9070 XT",
+            "device-gfx1201",
+            "Windows 11 26H2",
+            "HTTP 429",
+            "not evidence for an RX 9070",
+            "No Boost/Assist Vulkan GPU selection",
+            "not hardware evidence",
+        ):
+            self.assertIn(requirement, evidence)
+
     def test_installer_requirements_are_explicit(self):
         spec = (ROOT / "docs" / "installer-design.md").read_text(encoding="utf-8")
         for requirement in (
