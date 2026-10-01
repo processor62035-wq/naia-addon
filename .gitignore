@@ -21,6 +21,9 @@ build/
 dist/
 release/
 .naia-patch-backup/
+backups/
+config/download/
+install-state.json
 *.zip
 *.7z
 *.patch-backup
@@ -51,4 +54,3 @@ __pycache__/
 venv/
 .idea/
 .vscode/
-
