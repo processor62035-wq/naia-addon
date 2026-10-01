@@ -38,3 +38,5 @@ The existing Vulkan engine is already the separate cross-vendor path. First veri
 
 Cloud checks cover only gate 1. No GPU success claim is valid before gate 3.
 
+The Windows installer flow, language selection, safe target discovery, supported GPU selection, package verification, and patch/restore stages are specified in `docs/installer-design.md`.
+
