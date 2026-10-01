@@ -54,3 +54,6 @@ __pycache__/
 venv/
 .idea/
 .vscode/
+
+# Local NAIA fixture copy: never publish application source.
+/fixture/

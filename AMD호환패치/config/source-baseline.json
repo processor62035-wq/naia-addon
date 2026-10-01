@@ -1,0 +1,5 @@
+[
+  {"path":"resources/naia-backend/core/anima_engine/manifest.py","bytes":11082,"sha256":"6685DCFCDA685056E64445CD062176B273CF2D35002B52EB5A9EAD1E04254335"},
+  {"path":"resources/naia-backend/core/anima_engine/install.py","bytes":38986,"sha256":"FDE63683E5FDBDFFF1B9C541A035C66B2D7DDD53CCB0EE3FB1F74929019148D0"},
+  {"path":"resources/naia-backend/core/anima_engine/runtime.py","bytes":29350,"sha256":"748EA6520BFE14D571AF39D2B6A71ECCDF5F8F979E0C386E1A5065BEDAA1A27B"}
+]

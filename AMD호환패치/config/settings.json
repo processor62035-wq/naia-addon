@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "expected_naia_version": "2.0.48",
+  "protected_root_env": "NAIA_AMD_PROTECTED_ROOT",
+  "support_manifest_path": "manifest.json",
+  "trust_policy_path": "trust-policy.json",
+  "backup_directory_name": ".naia-amd-patch-backup",
+  "install_enabled": false,
+  "reason": "AMD artifacts and a trusted manifest pin have not passed release review."
+}

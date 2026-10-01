@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "status": "candidate-untrusted-disabled",
+  "target": {"python_abi": "cp313-cp313-win_amd64", "device_profile": "gfx1201", "rocm": "10.0.0"},
+  "official_index": "https://stable.repo.amd.com/rocm/whl-next/",
+  "reported_nine_wheels_bytes": 1512827661,
+  "reported_total_bytes_all_11": 1512879456,
+  "reported_wheels": [
+    {"name":"torch","version":"2.13.0+rocm10.0.0","filename":"torch-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/torch/torch-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":113438915,"sha256":null,"trust":"unverified"},
+    {"name":"torchvision","version":"0.28.0+rocm10.0.0","filename":"torchvision-0.28.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/torchvision/torchvision-0.28.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":903428,"sha256":null,"trust":"unverified"},
+    {"name":"torchaudio","version":"2.11.0.2+rocm10.0.0","filename":"torchaudio-2.11.0.2+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/torchaudio/torchaudio-2.11.0.2%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":2086468,"sha256":null,"trust":"unverified"},
+    {"name":"amd-torch-device-gfx1201","version":"2.13.0+rocm10.0.0","filename":"amd_torch_device_gfx1201-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx1201/amd_torch_device_gfx1201-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":51130924,"sha256":null,"trust":"unverified"},
+    {"name":"amd-torch-device-gfx12-0","version":"2.13.0+rocm10.0.0","filename":"amd_torch_device_gfx12_0-2.13.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torch-device-gfx12-0/amd_torch_device_gfx12_0-2.13.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":157950127,"sha256":null,"trust":"unverified"},
+    {"name":"amd-torchvision-device-gfx1201","version":"0.28.0+rocm10.0.0","filename":"amd_torchvision_device_gfx1201-0.28.0+rocm10.0.0-cp313-cp313-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/pytorch/whl-next/amd-torchvision-device-gfx1201/amd_torchvision_device_gfx1201-0.28.0%2Brocm10.0.0-cp313-cp313-win_amd64.whl","size_bytes":131261,"sha256":null,"trust":"unverified"},
+    {"name":"rocm-sdk-core","version":"10.0.0","filename":"rocm_sdk_core-10.0.0-py3-none-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-core/rocm_sdk_core-10.0.0-py3-none-win_amd64.whl","size_bytes":758050981,"sha256":null,"trust":"unverified"},
+    {"name":"rocm-sdk-libraries","version":"10.0.0","filename":"rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-libraries/rocm_sdk_libraries-10.0.0-py3-none-win_amd64.whl","size_bytes":116831755,"sha256":null,"trust":"unverified"},
+    {"name":"rocm-sdk-device-gfx1201","version":"10.0.0","filename":"rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl","url":"https://stable.repo.amd.com/rocm/core/whl-next/rocm-sdk-device-gfx1201/rocm_sdk_device_gfx1201-10.0.0-py3-none-win_amd64.whl","size_bytes":312303802,"sha256":null,"trust":"unverified"}
+  ],
+  "observed_only": [
+    {"name":"rocm-bootstrap","version":"0.1.0","size_bytes":27015,"observed_sha256":"33e3d4dad086b1f0e06bc049a618ca874d4fb72f758fff00676e23d2a644b652","url":null,"status":"observed-only-not-trusted"},
+    {"name":"rocm","version":"10.0.0","distribution":"sdist","size_bytes":24780,"observed_sha256":"65b5982249612a310135f5e061b9f28909e8ad718a1ddb3f1abba92298b7216b","url":null,"status":"observed-only-not-trusted"}
+  ],
+  "dependency_gaps": [
+    "Resolve every normal dependency to exact official artifact URL, compatible version, size and full SHA-256.",
+    "Review torch dependency metadata and PyPI candidates, including yanked/revoked status at release time.",
+    "rocm is an sdist: lock setuptools>=70.2.0 and all isolated build inputs plus output hashes, or review a no-build-isolation build path; global --only-binary=:all: is not valid.",
+    "Set ROCM_SDK_TARGET_FAMILY=gfx1201 only in the build subprocess environment after review.",
+    "Validate Python 3.13.16 installer signature/provenance before any private runtime setup."
+  ],
+  "policy": "Candidate metadata never authorizes download, execution, or installation. The nine direct URLs, filenames, versions, and sizes were supplied as candidate evidence and remain unverified until independently checked against official metadata. SHA-256 values are null. Downloaded-byte hashes are project-computed and require review, not vendor signatures."
+}

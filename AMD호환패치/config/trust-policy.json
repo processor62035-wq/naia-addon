@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "manifest_sha256": "",
+  "allowed_artifact_urls": [],
+  "trust_status": "unconfigured",
+  "note": "A manifest is accepted only when its canonical file bytes match this fixed SHA-256 pin. Do not populate this field until independent human review. Artifact hashes must be computed from downloaded bytes; ETag and CRC32 are not SHA-256."
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "manifest_id": "amd-rocm10-gfx1201-naia-2.0.48",
+  "enabled": false,
+  "support_status": "unsupported-unverified",
+  "app": {"name": "NAIA Portable", "version": "2.0.48"},
+  "profiles": [],
+  "patches": [],
+  "artifacts": [],
+  "reason": "No vendor-published SHA-256 values or reviewed project trust pin are available. Windows 11 26H2 is absent from the cited AMD ROCm 10.0 compatibility matrix."
+}
