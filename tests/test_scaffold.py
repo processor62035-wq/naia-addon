@@ -24,7 +24,10 @@ class RepositoryScaffoldTests(unittest.TestCase):
 
     def test_runtime_and_user_data_are_ignored(self):
         ignored = (ROOT / ".gitignore").read_text(encoding="utf-8")
-        for pattern in ("user-data/", "runtime-env/", "*.sqlite3", "*.parquet", "*.safetensors"):
+        for pattern in (
+            "user-data/", "runtime-env/", "backups/", "config/download/",
+            "*.sqlite3", "*.parquet", "*.safetensors"
+        ):
             self.assertIn(pattern, ignored)
 
     def test_extension_manifest_and_entrypoint_contract(self):
@@ -56,6 +59,8 @@ class RepositoryScaffoldTests(unittest.TestCase):
 
     def test_installer_requirements_are_explicit(self):
         spec = (ROOT / "docs" / "installer-design.md").read_text(encoding="utf-8")
+        self.assertNotIn("\ufffd", spec)
+        self.assertIn("AMD\uD638\uD658\uD328\uCE58/", spec)
         for requirement in (
             "English, Japanese, and Korean",
             "Never search the entire disk",
@@ -65,7 +70,7 @@ class RepositoryScaffoldTests(unittest.TestCase):
             "reliable total size",
             "completed bytes/total bytes",
             "retry/cancel states",
-            "AMDȣȯ��ġ/",
+            "AMD호환패치/",
             "config/download/",
             "Radeon RX 9070",
             "Unicode and spaces",
@@ -76,4 +81,3 @@ class RepositoryScaffoldTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
