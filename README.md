@@ -11,6 +11,8 @@ The app is at NAIA Portable 2.0.48. Its managed ANIMA runtime is identified as `
 
 The first implementation decision is therefore whether NAIA gains a supported runtime-selection hook or this project supplies a separately applied, reversible patch for a copy of the host app. The NVIDIA path must remain available. This repository currently contains development preparation and the compatibility design only; it does not claim to enable AMD acceleration yet.
 
+The requested Windows installer flow is captured in [docs/installer-design.md](docs/installer-design.md). The installer and patch are not implemented in this scaffold commit.
+
 ROCm 10 has official Windows guidance for specific Radeon GPU, driver, OS, and PyTorch combinations. Support must be checked against the exact target hardware before selecting a package. The Codex cloud environment is for CPU-only static and mocked checks; it cannot prove GPU acceleration.
 
 ## Cloud development
