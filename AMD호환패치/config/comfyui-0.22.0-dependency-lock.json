@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "lock_status": "source-roots-only-full-artifact-lock-incomplete-not-installable",
+  "generated_utc": "2026-10-01",
+  "target": {
+    "naia": "2.0.48",
+    "naia_backend_python": "3.12.10-do-not-use-for-rocm",
+    "comfyui": "0.22.0",
+    "comfyui_source_commit": "a8d2519058ea766ca3b14916bcc01ecef5efd235",
+    "python": "3.13.16",
+    "python_abi": "cp313-cp313-win_amd64",
+    "rocm": "10.0.0",
+    "gfx_arch": "gfx1201",
+    "windows_11_26h2": "unverified"
+  },
+  "evidence": {
+    "naia_profile": "source-baseline.json and exact upstream source at 6e97c7f4f37e495ad21657ed29d28dd9993a808e",
+    "comfyui_requirements": "https://raw.githubusercontent.com/Comfy-Org/ComfyUI/v0.22.0/requirements.txt",
+    "comfyui_requirements_blob": "1c87690da8604675dc0a45b3bc9a54e130050ed1",
+    "comfyui_system_stats": "https://raw.githubusercontent.com/Comfy-Org/ComfyUI/v0.22.0/server.py",
+    "comfyui_model_management": "https://raw.githubusercontent.com/Comfy-Org/ComfyUI/v0.22.0/comfy/model_management.py",
+    "spectrum_pyproject": "https://raw.githubusercontent.com/sorryhyun/ComfyUI-Spectrum-KSampler/f6a21456eeb8581ecba3f2041ba83213835512e8/pyproject.toml"
+  },
+  "comfyui_requirement_roots": [
+    {
+      "requirement": "comfyui-frontend-package==1.43.18",
+      "optional": false
+    },
+    {
+      "requirement": "comfyui-workflow-templates==0.9.79",
+      "optional": false
+    },
+    {
+      "requirement": "comfyui-embedded-docs==0.5.0",
+      "optional": false
+    },
+    {
+      "requirement": "torch",
+      "optional": false
+    },
+    {
+      "requirement": "torchsde",
+      "optional": false
+    },
+    {
+      "requirement": "torchvision",
+      "optional": false
+    },
+    {
+      "requirement": "torchaudio",
+      "optional": false
+    },
+    {
+      "requirement": "numpy>=1.25.0",
+      "optional": false
+    },
+    {
+      "requirement": "einops",
+      "optional": false
+    },
+    {
+      "requirement": "transformers>=4.50.3",
+      "optional": false
+    },
+    {
+      "requirement": "tokenizers>=0.13.3",
+      "optional": false
+    },
+    {
+      "requirement": "sentencepiece",
+      "optional": false
+    },
+    {
+      "requirement": "safetensors>=0.4.2",
+      "optional": false
+    },
+    {
+      "requirement": "aiohttp>=3.11.8",
+      "optional": false
+    },
+    {
+      "requirement": "yarl>=1.18.0",
+      "optional": false
+    },
+    {
+      "requirement": "pyyaml",
+      "optional": false
+    },
+    {
+      "requirement": "Pillow",
+      "optional": false
+    },
+    {
+      "requirement": "scipy",
+      "optional": false
+    },
+    {
+      "requirement": "tqdm",
+      "optional": false
+    },
+    {
+      "requirement": "psutil",
+      "optional": false
+    },
+    {
+      "requirement": "alembic",
+      "optional": false
+    },
+    {
+      "requirement": "SQLAlchemy>=2.0.0",
+      "optional": false
+    },
+    {
+      "requirement": "filelock",
+      "optional": false
+    },
+    {
+      "requirement": "av>=14.2.0",
+      "optional": false
+    },
+    {
+      "requirement": "comfy-kitchen>=0.2.8",
+      "optional": false
+    },
+    {
+      "requirement": "comfy-aimdo==0.3.0",
+      "optional": false
+    },
+    {
+      "requirement": "requests",
+      "optional": false
+    },
+    {
+      "requirement": "simpleeval>=1.0.0",
+      "optional": false
+    },
+    {
+      "requirement": "blake3",
+      "optional": false
+    },
+    {
+      "requirement": "kornia>=0.7.1",
+      "optional": true
+    },
+    {
+      "requirement": "spandrel",
+      "optional": true
+    },
+    {
+      "requirement": "pydantic~=2.0",
+      "optional": true
+    },
+    {
+      "requirement": "pydantic-settings~=2.0",
+      "optional": true
+    },
+    {
+      "requirement": "PyOpenGL",
+      "optional": true
+    },
+    {
+      "requirement": "glfw",
+      "optional": true
+    }
+  ],
+  "workflow": {
+    "source": "NAIA core/anima_engine/manifest.py GRAPH_TEMPLATE, MODELS, SPECTRUM_FILES",
+    "built_in_nodes": [
+      "VAEDecode",
+      "CLIPTextEncode",
+      "VAELoader",
+      "EmptyLatentImage",
+      "UNETLoader",
+      "CLIPLoader",
+      "RescaleCFG",
+      "SaveImage"
+    ],
+    "custom_nodes": [
+      {
+        "class": "SpectrumSPDKSampler",
+        "source_bytes": 116638,
+        "license": "MIT",
+        "commit": "f6a21456eeb8581ecba3f2041ba83213835512e8",
+        "workflow_parameters": {
+          "spd_sigma": 0.7,
+          "split_mode": "single",
+          "spd_scale": 0.5,
+          "adaptive_smc_alpha": 0,
+          "scheduler": "simple",
+          "sampler": "euler"
+        },
+        "files": 11,
+        "workflow_optional_adapter": false,
+        "dependencies": [],
+        "workflow_optional_dcw_calibrator": false,
+        "project": "ComfyUI-Spectrum-KSampler"
+      }
+    ],
+    "models": [
+      {
+        "sha256": "7506aa654cb911e35a54773d2587017645be77ea1e3c2e080d82ac416f3dc0e8",
+        "license": "NVIDIA Open Model + CircleStone NC",
+        "name": "naiANIMA2d_v03.safetensors",
+        "size_bytes": 4182244342
+      },
+      {
+        "sha256": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba",
+        "license": "Apache-2.0",
+        "name": "qwen_3_06b_base.safetensors",
+        "size_bytes": 1192135096
+      },
+      {
+        "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+        "license": "Apache-2.0",
+        "name": "qwen_image_vae.safetensors",
+        "size_bytes": 253806246
+      }
+    ],
+    "model_total_bytes": 5628185684
+  },
+  "amd_torch_closure": {
+    "candidate_lock": "release-candidate-lock-plan.json",
+    "amd_download_bytes": 1512879456,
+    "amd_expanded_bytes": 4187515915,
+    "pypi_candidate_lock": "release-evidence/metadata/pypi-transitive-candidate-plan.json",
+    "pypi_candidate_bytes": 30123614,
+    "pypi_candidates_downloaded": false,
+    "python_installer": {
+      "version": "3.13.16",
+      "publisher_metadata_size_bytes": 29935584,
+      "downloaded": false,
+      "signature_verified": false
+    },
+    "publisher_sha256_missing_amd": true,
+    "developer_computed_pins_preserved": true,
+    "developer_pins_meaning": "developer-reviewed content identity only, not AMD signature or publisher digest"
+  },
+  "size_accounting": {
+    "known_candidate_download_bytes": 1609137452,
+    "known_download_plus_all_workflow_models_bytes": 7237323136,
+    "naia_test_copy_bytes": 653373223,
+    "known_min_peak_disk_bytes": 12078212274,
+    "full_download_and_disk_upper_bound": null,
+    "reason": "Adds five directly inspected PyPI wheel sizes to the previous subtotal; workflow-template transitive wheels, the rest of ComfyUI requirements, runtime source/install footprint, Python installed footprint and temporary duplicate space remain unsized"
+  },
+  "metadata_audit": {
+    "checked_utc": "2026-10-02",
+    "status": "partial-static-metadata-no-transitive-lock",
+    "target_markers": {
+      "python_version": "3.13",
+      "python_full_version": "3.13.16",
+      "sys_platform": "win32",
+      "platform_system": "Windows",
+      "platform_machine": "AMD64",
+      "implementation_name": "cpython",
+      "abi_tag": "cp313-cp313-win_amd64"
+    },
+    "exact_direct_root_metadata": [
+      {
+        "requirement": "comfyui-frontend-package==1.43.18",
+        "wheel": "comfyui_frontend_package-1.43.18-py3-none-any.whl",
+        "size_bytes_publisher": 22212584,
+        "sha256_publisher_pypi": "bb2727f129ccaac2f44552ae538519e2c865a4ccc1a4bd7133467a5628153b0a",
+        "license_expression": null,
+        "requires_python": ">=3.9",
+        "requires_dist": [],
+        "wheel_tag": "py3-none-any",
+        "metadata_source": "https://pypi.org/pypi/comfyui-frontend-package/1.43.18/json",
+        "publisher_signature": false,
+        "downloaded_or_locally_hashed": false
+      },
+      {
+        "requirement": "comfyui-workflow-templates==0.9.79",
+        "wheel": "comfyui_workflow_templates-0.9.79-py3-none-any.whl",
+        "size_bytes_publisher": 10467,
+        "sha256_publisher_pypi": "cb7f891ac1bdc953229406f10a63c711d21fc97ef439b2ce74f6650458e5f958",
+        "license_expression": null,
+        "license": "MIT",
+        "requires_python": ">=3.9",
+        "requires_dist": [
+          "comfyui-workflow-templates-core==0.3.235",
+          "comfyui-workflow-templates-media-api==0.3.77",
+          "comfyui-workflow-templates-media-video==0.3.85",
+          "comfyui-workflow-templates-media-image==0.3.140",
+          "comfyui-workflow-templates-media-other==0.3.201"
+        ],
+        "wheel_tag": "py3-none-any",
+        "metadata_source": "https://pypi.org/pypi/comfyui-workflow-templates/0.9.79/json",
+        "publisher_signature": false,
+        "downloaded_or_locally_hashed": false
+      },
+      {
+        "requirement": "comfyui-embedded-docs==0.5.0",
+        "wheel": "comfyui_embedded_docs-0.5.0-py3-none-any.whl",
+        "size_bytes_publisher": 13674897,
+        "sha256_publisher_pypi": "87d831bb39f99a9dacc546f8ad9504634d026ec90759919bc843eecfefde877f",
+        "license_expression": "GPL-3.0",
+        "requires_python": ">=3.9",
+        "requires_dist": null,
+        "wheel_tag": "py3-none-any",
+        "metadata_source": "https://pypi.org/pypi/comfyui-embedded-docs/0.5.0/json",
+        "publisher_signature": false,
+        "downloaded_or_locally_hashed": false
+      },
+      {
+        "requirement": "comfy-aimdo==0.3.0",
+        "wheel": "comfy_aimdo-0.3.0-cp39-abi3-win_amd64.whl",
+        "size_bytes_publisher": 239618,
+        "sha256_publisher_pypi": "9fd58a81ab87975fee0db470f5fca1c2c5c98a03fbf242de6dd240ce227bb310",
+        "license_expression": null,
+        "license_files": ["LICENSE"],
+        "requires_python": ">=3.9",
+        "requires_dist": null,
+        "wheel_tag": "cp39-abi3-win_amd64",
+        "metadata_source": "https://pypi.org/pypi/comfy-aimdo/0.3.0/json",
+        "publisher_signature": false,
+        "downloaded_or_locally_hashed": false,
+        "upstream_readme_support_claim": "NVIDIA only; PyTorch 2.8+; CUDA 12.8+",
+        "upstream_v0_3_0_source_static_note": "control.py detects +rocm and selects aimdo_rocm.dll; native library load is deferred to init()/init_device()",
+        "amd_runtime_policy": "Pass --disable-dynamic-vram; ComfyUI v0.22.0 main.py only auto-enables dynamic VRAM for NVIDIA. AMD runtime compatibility remains unverified and this wheel archive has not been inspected."
+      },
+      {
+        "requirement": "torchsde",
+        "candidate_version": "0.2.6",
+        "wheel": "torchsde-0.2.6-py3-none-any.whl",
+        "size_bytes_publisher": 61232,
+        "sha256_publisher_pypi": "19bf7ff02eec7e8e46ba1cdb4aa0f9db1c51d492524a16975234b467f7fc463b",
+        "license": "Apache-2.0",
+        "requires_python": ">=3.8",
+        "requires_dist": ["numpy>=1.19", "scipy>=1.5", "torch>=1.6.0", "trampoline>=0.1.2"],
+        "wheel_tag": "py3-none-any",
+        "metadata_source": "https://pypi.org/pypi/torchsde/0.2.6/json",
+        "publisher_signature": false,
+        "downloaded_or_locally_hashed": false
+      }
+    ],
+    "partial_existing_pypi_candidates": [
+      "filelock 4.0.8", "numpy 2.5.3", "Pillow 12.3.0", "typing-extensions 4.16.0", "sympy 1.14.0", "networkx 3.7", "jinja2 3.1.6", "markupsafe 3.0.3", "fsspec 2026.9.0", "mpmath 1.3.0"
+    ],
+    "known_unresolved_direct_roots": [
+      "torch", "torchvision", "torchaudio", "numpy>=1.25.0", "einops", "transformers>=4.50.3", "tokenizers>=0.13.3", "sentencepiece", "safetensors>=0.4.2", "aiohttp>=3.11.8", "yarl>=1.18.0", "pyyaml", "scipy", "tqdm", "psutil", "alembic", "SQLAlchemy>=2.0.0", "filelock", "av>=14.2.0", "comfy-kitchen>=0.2.8", "requests", "simpleeval>=1.0.0", "blake3", "kornia>=0.7.1", "spandrel", "pydantic~=2.0", "pydantic-settings~=2.0", "PyOpenGL", "glfw"
+    ],
+    "known_unresolved_transitive_roots": [
+      "comfyui-workflow-templates-core==0.3.235", "comfyui-workflow-templates-media-api==0.3.77", "comfyui-workflow-templates-media-video==0.3.85", "comfyui-workflow-templates-media-image==0.3.140", "comfyui-workflow-templates-media-other==0.3.201", "trampoline>=0.1.2"
+    ],
+    "blockers": [
+      "PyPI JSON shell retrieval failed with a TLS handshake error; browser-accessible API metadata was captured for five exact roots only.",
+      "Most direct roots remain ranges or unpinned; no exhaustive CPython 3.13 Windows wheel compatibility and environment-marker closure was computed.",
+      "The 5 transitive workflow-template package artifacts and trampoline have no URL/hash/size records here.",
+      "No candidate wheel artifacts were downloaded/hashed or license files inspected; all PyPI digests are publisher-index metadata only.",
+      "comfy-aimdo 0.3.0 has a Windows ABI3 PyPI wheel, but its publisher README claims NVIDIA/CUDA support while v0.3.0 source has a ROCm loader. Its Windows wheel contents/licensing and AMD behavior remain unresolved."
+    ],
+    "full_transitive_lock_generated": false,
+    "validated_target_marker_closure": false,
+    "transitive_package_count": null
+  },
+  "blockers": [
+    "resolve complete ComfyUI 0.22.0 Python 3.13 Windows AMD closure and wheel hashes/sizes/licensing",
+    "identify and pin AMD-supported ComfyUI source/build matching ROCm 10",
+    "measure expanded install footprint using archive metadata without executing packages",
+    "Windows 11 26H2 remains unverified pending controlled testing; this does not block preparation",
+    "the current manifest/trust policy is disabled and runtime install wiring remains incomplete"
+  ]
+}

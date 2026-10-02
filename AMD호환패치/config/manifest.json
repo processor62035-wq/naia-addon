@@ -7,5 +7,5 @@
   "profiles": [],
   "patches": [],
   "artifacts": [],
-  "reason": "No vendor-published SHA-256 values or reviewed project trust pin are available. Windows 11 26H2 is absent from the cited AMD ROCm 10.0 compatibility matrix."
+  "reason": "The production manifest pin is unconfigured, the full ComfyUI/Python runtime closure and NAIA service/receipt integration are incomplete, and Windows 11 26H2 remains unverified. Developer-computed AMD candidate hashes are content-identity pins, not manufacturer signatures."
 }

@@ -1,4 +1,4 @@
-import hashlib, importlib.util, json, os, tempfile, unittest, sys, io
+import ast, hashlib, importlib.util, json, os, tempfile, unittest, sys, io
 from pathlib import Path
 from unittest import mock
 from contextlib import redirect_stdout
@@ -159,7 +159,8 @@ class Tests(unittest.TestCase):
   sources={
    "manifest.py": b"# synthetic manifest fixture\nVALUE = 1\n",
    "install.py": b'''from pathlib import Path
-import subprocess, time
+import subprocess
+import time
 class ManagedEngineError(RuntimeError): pass
 class GpuInfo:
     source: str = "nvidia-smi"
@@ -174,7 +175,8 @@ class AnimaInstallJob:
         return None
 ''',
    "runtime.py": b'''from pathlib import Path
-import subprocess, time
+import subprocess
+import time
 class ManagedEngineError(RuntimeError): pass
 class Runtime:
     def __init__(self, engine_root: Path, *, runtime_id: str, reserve_vram_gb: float, idle_minutes: int,
@@ -193,6 +195,43 @@ class Runtime:
   }
   baseline={name:h(data) for name,data in sources.items()}
   transformed=transform.transform_sources(sources,baseline)
+  install_text=transformed["install.py"].decode("utf-8")
+  runtime_text=transformed["runtime.py"].decode("utf-8")
+  self.assertNotIn("rocminfo",install_text)
+  self.assertIn("torch.version.hip",runtime_text)
+  self.assertIn("_amd_runtime_preflight",runtime_text)
+  self.assertIn("_amd_system_stats_uses_gpu",runtime_text)
+  self.assertIn('== "cuda"',runtime_text)
+  self.assertNotIn('casefold() == "hip"',runtime_text)
+  self.assertIn('[str(python), "-B", "-c", code]',runtime_text)
+  self.assertIn('"--disable-dynamic-vram"',runtime_text)
+  self.assertIn('argv.insert(3, "--disable-dynamic-vram")',runtime_text)
+  tree=ast.parse(runtime_text)
+  command_method=next(n for n in tree.body if isinstance(n,ast.ClassDef) and any(isinstance(m,ast.FunctionDef) and m.name=="_command" for m in n.body))
+  command_ast=next(m for m in command_method.body if isinstance(m,ast.FunctionDef) and m.name=="_command")
+  command_ns={}
+  exec(compile(ast.Module(body=[command_ast],type_ignores=[]),"synthetic-command-order","exec"),command_ns)
+  class FakeRuntime:
+   backend_profile="amd"
+   def _amd_command(self,port):return (["python.exe","-s","C:/ComfyUI/main.py","--listen","127.0.0.1"],"root","env")
+  self.assertEqual(command_ns["_command"](FakeRuntime(),8188),(["python.exe","-s","C:/ComfyUI/main.py","--disable-dynamic-vram","--listen","127.0.0.1"],"root","env"))
+  # Exercise the transformed gate itself against synthetic ROCm/Comfy /system_stats records.
+  cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and any(isinstance(m,ast.FunctionDef) and m.name=="_amd_system_stats_uses_gpu" for m in n.body))
+  method=next(n for n in cls.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)) and n.name=="_amd_system_stats_uses_gpu")
+  isolated=ast.Module(body=[method],type_ignores=[])
+  profile={"torch_version":"2.13.0+rocm10.0.0","rocm_version":"10.0.0","hip_runtime_version":"7.15.26333","hip_architectures":["gfx1201"]}
+  namespace={}
+  exec(compile(isolated,"synthetic-runtime-health","exec"),namespace)
+  accepts=namespace["_amd_system_stats_uses_gpu"]
+  stats={"system":{"pytorch_version":"2.13.0+rocm10.0.0"},"devices":[{"type":"cuda","index":0,"vram_total":16000000000}]}
+  good={"torch":"2.13.0+rocm10.0.0","hip":"7.15.26333","rocm":"10.0.0","available":True,"count":1,"index":0,"gfx":"gfx1201:sramecc+:xnack-","total_memory":16000000000}
+  self.assertTrue(accepts(None,stats,good,profile))
+  for bad in ({**good,"hip":"6.4.43483"},{**good,"hip":None},{**good,"rocm":None},{**good,"available":False}):
+   self.assertFalse(accepts(None,stats,bad,profile))
+  for bad_torch in ("2.13.0+rocm10.0.01","2.13.0+cu130","2.13.0+rocm10.0.0a0"):
+   self.assertFalse(accepts(None,stats,{**good,"torch":bad_torch},profile))
+   self.assertFalse(accepts(None,{**stats,"system":{"pytorch_version":bad_torch}},good,profile))
+  self.assertFalse(accepts(None,{**stats,"devices":[{"type":"hip","index":0,"vram_total":16000000000}]},good,profile))
   self.assertEqual(set(transformed),set(sources))
   relative={"manifest.py":"resources/naia-backend/core/anima_engine/manifest.py",
             "install.py":"resources/naia-backend/core/anima_engine/install.py",
@@ -243,3 +282,6 @@ class Runtime:
    self.assertIn("%*",(PACKAGE/script).read_text(encoding="utf-8"))
 
 if __name__=="__main__":unittest.main(verbosity=2)
+
+
+
