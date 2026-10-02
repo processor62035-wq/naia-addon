@@ -35,7 +35,7 @@ python -B .\config\scripts\test_patch_engine.py
 python -B .\config\scripts\test_candidate_stage.py
 ```
 
-Tests use temporary synthetic app files only. They do not launch the elevated entry points, access the source app, download artifacts, or install runtime dependencies. The most recent local run used the Python bundled with the protected NAIA copy with bytecode writing disabled: **21 tests run, 20 passed, 1 skipped** because this account could not create a symlink. The separate candidate-stage suite passes 15/15 mocked tests. These are synthetic fixture tests, not NAIA or AMD hardware validation.
+Tests use temporary synthetic app files only. They do not launch the elevated entry points, access the source app, download artifacts, or install runtime dependencies. An independent local rerun used CPython 3.12.14 with bytecode writing disabled: **21 tests run, 20 passed, 1 skipped** because this account could not create a symlink. The separate candidate-stage suite passes 15/15 mocked tests. These are synthetic fixture tests, not NAIA or AMD hardware validation.
 
 The manifest remains disabled. A functional AMD release still requires an independently trusted manifest digest, trusted artifact hashes and complete dependency locks, reviewed patch payload bytes, and an exact supported Windows/GPU/driver profile. No AMD acceleration or Boost/Assist Vulkan behavior has been validated on hardware.
 ## Runtime closure and hardware-test scope
